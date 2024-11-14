@@ -1,13 +1,14 @@
 [tool.poetry]
-name = "app"
+name = "building-a-batch-etl-pipeline-redpanda"
 version = "0.1.0"
 description = ""
 authors = ["BouajilaHamza <hamza.bouajila@enetcom.u-sfax.tn>"]
 readme = "README.md"
-packages = [{include = "app", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
+requests = "^2.32.3"
+quixstreams = "^3.2.1"
 
 
 [build-system]
