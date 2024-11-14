@@ -9,7 +9,7 @@ readme = "README.md"
 python = "^3.12"
 requests = "^2.32.3"
 quixstreams = "^3.2.1"
-pydantic = "^2.9.2"
+snowflake-connector-python = "^3.12.3"
 
 
 [build-system]
