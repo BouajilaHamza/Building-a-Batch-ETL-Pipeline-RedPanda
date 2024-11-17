@@ -1,5 +1,5 @@
 import unittest
-from data_ingestion.news_data_ingestor import NewsDataIngestor
+from app.data_ingestion.news_data_ingestor import NewsDataIngestor
 
 class TestNewsDataIngestor(unittest.TestCase):
     def test_fetch_data(self):
