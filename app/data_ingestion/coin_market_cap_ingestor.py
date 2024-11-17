@@ -1,5 +1,3 @@
-import json
-import logging
 from requests import Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 
@@ -25,6 +23,7 @@ class CoinMarketCapIngestor(DataIngestor):
 
     def fetch_data(self):
         try:
+            self.logger.info("Fetching data from CoinMarketCap API")
             response = self.session.get(self.url, params=self.parameters)
             response.raise_for_status()  # Check if the request was successful
             data = response.json()  # Directly parse JSON response
