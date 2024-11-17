@@ -14,8 +14,7 @@ class NewsDataIngestor(DataIngestor):
             self.logger.info("Fetching data from NewsData API")
             url = f"https://newsdata.io/api/1/latest?apikey={settings.NEWS_API_KEY}&category={self.category}&country={self.country}"
             response = requests.get(url)
-            self.logger.info(f"Data fetched successfully from NewsData API {response.text}")
-            # self.logger.info(f"Data fetched successfully {response.json()}")
+            self.logger.info(f"Data fetched successfully from NewsData API {response}")
             return response.json()
         except Exception as e:
             self.logger.error(f"An error occurred: {e}")

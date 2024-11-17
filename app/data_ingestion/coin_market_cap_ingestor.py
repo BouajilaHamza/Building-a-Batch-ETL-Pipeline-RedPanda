@@ -27,7 +27,7 @@ class CoinMarketCapIngestor(DataIngestor):
             response = self.session.get(self.url, params=self.parameters)
             response.raise_for_status()  # Check if the request was successful
             data = response.json()  # Directly parse JSON response
-            self.logger.info(f"Data fetched successfully: {data}")
+            self.logger.info(f"Data fetched successfully: {response}")
             return data
         except (ConnectionError, Timeout, TooManyRedirects, Exception) as e:
             self.logger.error(f"An error occurred: {e}")
