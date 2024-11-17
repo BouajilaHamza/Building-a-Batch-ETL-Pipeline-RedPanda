@@ -13,3 +13,6 @@ Let's get started by setting up the environment.
 
 ## Logs :
 https://my.papertrailapp.com/events
+
+## Redpanda Console :
+http://localhost:8080/

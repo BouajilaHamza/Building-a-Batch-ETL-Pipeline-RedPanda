@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     PAPERTRAIL_HOST: str = config("PAPERTRAIL_HOST",cast=str)
     PAPERTRAIL_PORT: int = config("PAPERTRAIL_PORT",cast=int)
 
+    #RedPanda
+    REDPANDA_TOPIC: str = config("REDPANDA_TOPIC",cast=str)
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

@@ -1,5 +1,5 @@
 class ETLPipeline:
-    def __init__(self, ingestors, producer):
+    def __init__(self, ingestors:list, producer):
         self.ingestors = ingestors
         self.producer = producer
 

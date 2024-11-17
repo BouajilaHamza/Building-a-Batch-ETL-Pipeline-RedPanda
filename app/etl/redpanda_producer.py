@@ -1,12 +1,12 @@
 import quixstreams as qx
+from app.config.setup import settings
 
 class RedpandaProducer:
     def __init__(self):
         self.app = qx.Application(
             broker_address="localhost:9092",
         )
-        self.topic = self.app.topic("my_topic")
-        self.topic = self.app.topic(name='my_topic', value_serializer='json')
+        self.topic = self.app.topic(settings.REDPANDA_TOPIC, value_serializer='json')
 
 
     def produce_data(self, data):
