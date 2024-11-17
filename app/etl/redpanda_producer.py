@@ -10,13 +10,11 @@ class RedpandaProducer:
 
 
     def produce_data(self, data):
-        event = {"id": "1", "text": "Lorem ipsum dolor sit amet"}
-
         # Create a Producer instance
         with self.app.get_producer() as producer:
 
             # Serialize an event using the defined Topic 
-            message = self.topic.serialize(key=event["id"], value=event)
+            message = self.topic.serialize(key="1", value=data)
 
             # Produce a message into the Kafka topic
             producer.produce(

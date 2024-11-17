@@ -12,6 +12,7 @@ quixstreams = "^3.2.1"
 snowflake-connector-python = "^3.12.3"
 pydantic = "^2.9.2"
 python-decouple = "^3.8"
+ipykernel = "^6.29.5"
 
 
 [build-system]
