@@ -7,7 +7,7 @@ volumes:
   redpanda-0: null
 services:
   redpanda-0:
-    container_name: redpanda
+    container_name: redpanda-0
     command:
       - redpanda
       - start
@@ -51,18 +51,18 @@ services:
       CONFIG_FILEPATH: /tmp/config.yml
       CONSOLE_CONFIG_FILE: |
         kafka:
-          brokers: ["redpanda:9092"]
+          brokers: ["redpanda-0:9092"]
           schemaRegistry:
             enabled: true
-            urls: ["http://redpanda:8081"]
+            urls: ["http://redpanda-0:8081"]
         redpanda:
           adminApi:
             enabled: true
-            urls: ["http://redpanda:9644"]
+            urls: ["http://redpanda-0:9644"]
     ports:
       - 8080:8080
     depends_on:
-      - redpanda
+      - redpanda-0
   
 
 

@@ -1,4 +1,4 @@
-from data_ingestor import DataIngestor
+from app.data_ingestion.data_ingestor import DataIngestor
 import requests
 
 
