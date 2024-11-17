@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     #APIS
     NEWS_API_KEY: str = config("NEWS_API_KEY",cast=str)
-
+    COIN_MARKET_CAP_API_KEY: str = config("COIN_MARKET_CAP_API_KEY",cast=str)
 
     #LOGGING
     PAPERTRAIL_HOST: str = config("PAPERTRAIL_HOST",cast=str)

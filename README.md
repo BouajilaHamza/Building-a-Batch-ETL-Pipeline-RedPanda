@@ -8,3 +8,8 @@ Extracts two tables from MySQL database as two Spark data frames.
 Join these data frames, and aggregate them to calculate the top selling products.
 Write the aggregated result into a Postgres table
 Let's get started by setting up the environment.
+
+
+
+## Logs :
+https://my.papertrailapp.com/events
