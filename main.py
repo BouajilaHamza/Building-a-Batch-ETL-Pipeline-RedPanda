@@ -11,4 +11,5 @@ if __name__ == "__main__":
     producer = RedpandaProducer()
     consumer = RedpandaConsumer()
     pipeline = ETLPipeline(ingestors, producer,consumer)
+    
     pipeline.run()

@@ -13,6 +13,7 @@ class ETLPipeline:
             transformed_data = self.transform(data)
             self.producer.produce_data(transformed_data)
             self.consumer.consume_data()
+            
 
     def transform(self, data):
         # Perform data transformation here

@@ -13,6 +13,8 @@ snowflake-connector-python = "^3.12.3"
 pydantic = "^2.9.2"
 python-decouple = "^3.8"
 ipykernel = "^6.29.5"
+streamlit = "^1.40.1"
+scrapy = "^2.11.2"
 
 
 [build-system]
