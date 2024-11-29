@@ -9,6 +9,39 @@ Join these data frames, and aggregate them to calculate the top selling products
 Write the aggregated result into a Postgres table
 Let's get started by setting up the environment.
 
+## Pipeline diagram :
+                +------------------------+
+                |  Data Sources          |
+                |  (New Data, Bitcoin)   |
+                +-----------+------------+
+                            |
+                            v
+                +------------------------+
+                |    Redpanda            |
+                | (Data Ingestion Layer) |
+                +-----------+------------+
+                            |
+                            v
+                +------------------------+
+                |   QuixStreams          |
+                | (Real-Time Processing) |
+                +-----------+------------+
+                            |
+                            v
+                +------------------------+
+                |  Snowflake Data Marts  |
+                +---+---------------+----+
+                    |               |
+                    v               v
+       +-----------------+   +-----------------+
+       | Data Mart 1     |   | Data Mart 2     |
+       | (New Data)      |   | (Bitcoin Data)  |
+       +-----------------+   +-----------------+
+                            |
+                            v
+              +-----------------------------+
+              | Final Merged Data (ETL Job) |
+              +-----------------------------+
 
 
 ## Logs :
@@ -16,3 +49,6 @@ https://my.papertrailapp.com/events
 
 ## Redpanda Console :
 http://localhost:8080/
+
+
+## Storage

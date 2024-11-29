@@ -1,5 +1,4 @@
-from app.config.logging_config import setup_logging
-
+from app.setup.logging_config import setup_logging
 
 
 class DataIngestor:

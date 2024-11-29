@@ -1,14 +1,15 @@
-import requests 
+import requests
+
 from app.data_ingestion.data_ingestor import DataIngestor
-from app.config.setup import settings
+from app.setup.config import settings
+
 
 class NewsDataIngestor(DataIngestor):
-
-    def __init__(self,category='politics',country='bd'):
+    def __init__(self, category="politics", country="bd"):
         super().__init__()
         self.category = category
         self.country = country
-        
+
     def fetch_data(self):
         try:
             self.logger.info("Fetching data from NewsData API")
@@ -19,6 +20,3 @@ class NewsDataIngestor(DataIngestor):
         except Exception as e:
             self.logger.error(f"An error occurred: {e}")
             return None
-
-
-
