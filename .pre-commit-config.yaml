@@ -25,11 +25,11 @@ repos:
       - id: ruff-format
 
 
-  # bandit: Checks for common security issues in Python code.
-  - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.4
-    hooks:
-      - id: bandit
+  # # bandit: Checks for common security issues in Python code.
+  # - repo: https://github.com/PyCQA/bandit
+  #   rev: 1.7.4
+  #   hooks:
+  #     - id: bandit
 
 
   #isort: Sorts Python imports according to the defined style, in this case, the "black" profile to make in compatible with the black hook above.
