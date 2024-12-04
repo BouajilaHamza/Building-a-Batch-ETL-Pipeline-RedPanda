@@ -21,11 +21,6 @@ class ETLPipeline:
         while True:
             for ingestor in self.ingestors:
                 data = ingestor.fetch_data()
-                transformed_data = self.transform(data)
-                self.producer.produce_data(transformed_data)
+                self.producer.produce_data(data)
                 self.consumer.consume_data()
-                self.loader.load_data(transformed_data)
-
-    def transform(self, data):
-        # Perform data transformation here
-        return data
+                self.loader.load_data(data)
