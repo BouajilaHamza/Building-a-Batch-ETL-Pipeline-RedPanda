@@ -30,10 +30,6 @@ class RedpandaInitializer:
         self.sdf = self.app.dataframe(self.input_topic)
         self.sdf = self.sdf.apply(transform)
         self.sdf.to_topic(self.output_topic)
-        print("RedpandaInitializer initialized")
-        print(
-            f"Topic name: {self.input_topic.name} | \t OutPut Topic name: {self.output_topic.name}"
-        )
 
     async def async_run(self):
         await self.app.run()

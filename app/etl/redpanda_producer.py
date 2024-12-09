@@ -1,4 +1,5 @@
 import time
+import uuid
 
 from app.etl.redpanda_init import RedpandaInitializer
 
@@ -12,7 +13,7 @@ class RedpandaProducer(RedpandaInitializer):
         # Create a Producer instance
         with self.app.get_producer() as producer:
             # Serialize an event using the defined Topic
-            message = self.input_topic.serialize(key="1", value=data)
+            message = self.input_topic.serialize(key=str(uuid.uuid4()), value=data)
             # Produce a message into the Kafka topic
             self.logger.info(f"Producing message: {message}")
             producer.produce(
