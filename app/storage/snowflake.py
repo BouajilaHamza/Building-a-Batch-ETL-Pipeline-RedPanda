@@ -57,15 +57,13 @@ class BitcoinDataLoader(SnowflakeLoader):
 
     def clean_data(self, raw_data):
         # Perform specific data cleaning and transformation
-        cleaned_data = []
-        for i in range(len(raw_data["data"])):
-            cleaned_data.append(raw_data["data"][i]["quote"]["USD"])
-        return cleaned_data
+        return [raw_data]
 
     def load_data(self, data):
         try:
             cleaned_data = self.clean_data(data)
             for record in cleaned_data:
+                print(record)
                 requette = """ INSERT INTO BitcoinData (price, volume_24h, volume_change_24h, percent_change_1h, percent_change_24h, percent_change_7d, market_cap, market_cap_dominance, fully_diluted_market_cap, last_updated) VALUES ({}, {}, {}, {}, {}, {}, {}, {}, {}, '{}')
                 """.format(
                     record["price"],
