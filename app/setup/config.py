@@ -19,6 +19,9 @@ class Settings(BaseSettings):
     SNOWFLAKE_PASSWORD: str = config("SNOWFLAKE_PASSWORD", cast=str)
     SNOWFLAKE_ACCOUNT: str = config("SNOWFLAKE_ACCOUNT", cast=str)
 
+    # Motherduck
+    MOTHERDUCK_TOKEN: str = config("MOTHERDUCK_TOKEN", cast=str)
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

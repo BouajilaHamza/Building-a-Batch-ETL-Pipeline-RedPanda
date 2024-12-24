@@ -22,14 +22,6 @@ class ETLPipeline:
         self.batch = []
         self.logger = setup_logging("ETLPipeline")
 
-    # def run(self):
-    #     while True:
-    #         for ingestor in self.ingestors:
-    #             data = ingestor.fetch_data()
-    #             self.producer.produce_data(data)
-    #             consumed_msg = self.consumer.consume_data()
-    #             self.loader.load_data(consumed_msg)
-
     def run(self):
         try:
             while True:
