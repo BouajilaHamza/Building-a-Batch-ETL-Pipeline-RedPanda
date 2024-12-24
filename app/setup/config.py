@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     # Motherduck
     MOTHERDUCK_TOKEN: str = config("MOTHERDUCK_TOKEN", cast=str)
 
+    # DataBase
+    DATABASE_NAME: str = config("DATABASE_NAME", cast=str)
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

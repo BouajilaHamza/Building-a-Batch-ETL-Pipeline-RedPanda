@@ -14,8 +14,8 @@ class SnowflakeLoader:
         )
         self.logger = setup_logging("SnowflakeLoader")
         self.cursor = self.conn.cursor()
-        self.cursor.execute("CREATE DATABASE IF NOT EXISTS StreamingAppDatabase")
-        self.cursor.execute("USE DATABASE StreamingAppDatabase")
+        self.cursor.execute(f"CREATE DATABASE IF NOT EXISTS {settings.DATABASE_NAME}")
+        self.cursor.execute(f"USE DATABASE {settings.DATABASE_NAME}")
 
     def clean_data(self, raw_data):
         raise NotImplementedError("This method should be overridden by subclasses")
