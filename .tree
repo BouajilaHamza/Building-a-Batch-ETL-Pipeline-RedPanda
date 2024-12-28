@@ -1,0 +1,116 @@
+project_root/
+│
+├── backend/
+│   ├── Dockerfile
+│   ├── __init__.py
+│   ├── poetry.lock
+│   ├── pyproject.toml
+│   ├── README.md
+│   ├── src/
+│   │   ├── api/
+│   │   │   ├── handlers/
+│   │   │   │   └── __init__.py
+│   │   │   ├── __init__.py
+│   │   │   └── router.py
+│   │   ├── core/
+│   │   │   ├── config.py
+│   │   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   ├── main.py
+│   │   ├── services/
+│   │   ├── static/
+│   │   │   └── style.css
+│   │   └── templates/
+│   │       └── index.html
+│   └── tests/
+│       └── __init__.py
+│
+├── data_pipeline/
+│   ├── Dockerfile
+│   ├── __init__.py
+│   ├── poetry.lock
+│   ├── pyproject.toml
+│   ├── README.md
+│   ├── src/
+│   │   ├── api/
+│   │   │   ├── handlers/
+│   │   │   │   └── __init__.py
+│   │   │   ├── __init__.py
+│   │   │   └── router.py
+│   │   ├── core/
+│   │   │   ├── config.py
+│   │   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   ├── main.py
+│   │   ├── services/
+│   │   ├── static/
+│   │   │   └── style.css
+│   │   └── templates/
+│   │       └── index.html
+│   ├── data_ingestion/
+│   │   ├── coin_market_cap_ingestor.py
+│   │   ├── data_ingestor.py
+│   │   ├── __init__.py
+│   │   ├── news_data_ingestor.py
+│   │   └── __pycache__/
+│   ├── etl/
+│   │   ├── etl_pipeline.py
+│   │   ├── __init__.py
+│   │   ├── __pycache__/
+│   │   ├── redpanda_consumer.py
+│   │   ├── redpanda_init.py
+│   │   └── redpanda_producer.py
+│   ├── setup/
+│   │   ├── config.py
+│   │   ├── __init__.py
+│   │   ├── logging_config.py
+│   │   └── __pycache__/
+│   ├── storage/
+│   │   ├── __init__.py
+│   │   ├── motherduck.py
+│   │   ├── __pycache__/
+│   │   ├── snowflake.py
+│   │   └── storage_setup.py
+│   ├── tests/
+│   │   ├── __init__.py
+│   │   ├── test_data_ingestion.py
+│   │   └── test_etl_pipeline.py
+│   ├── airflow/
+│   │   ├── dags/
+│   │   │   ├── __init__.py
+│   │   │   └── data_pipeline_dag.py
+│   │   ├── Dockerfile
+│   │   ├── docker-compose.yml
+│   │   ├── airflow.cfg
+│   │   └── README.md
+│
+├── ai_module/
+│   ├── Dockerfile
+│   ├── __init__.py
+│   ├── poetry.lock
+│   ├── pyproject.toml
+│   ├── README.md
+│   ├── src/
+│   │   ├── __init__.py
+│   │   ├── main.py
+│   │   └── models/
+│   │       ├── __init__.py
+│   │       └── prediction_model.py
+│   ├── mlflow/            # MLflow tracking and models
+│   │   ├── tracking/      # MLflow tracking server setup
+│   │   └── models/        # Stored models from MLflow
+│   ├── tests/
+│       └── __init__.py
+│
+├── docker-compose.yaml
+├── __init__.py
+├── LICENSE
+├── Makefile
+├── notebooks/
+│   ├── bitcoin_data_inspection.ipynb
+│   ├── motherduck.ipynb
+│   ├── news_data_inspection.ipynb
+│   ├── producer.ipynb
+│   ├── research.ipynb
+│   └── snowflake.ipynb
+└── setup.sh

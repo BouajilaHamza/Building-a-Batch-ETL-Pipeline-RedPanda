@@ -63,7 +63,11 @@ services:
       - 8080:8080
     depends_on:
       - redpanda-0
-  
 
-
-  
+  backend:
+    container_name: backend
+    build: ./backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redpanda-0
