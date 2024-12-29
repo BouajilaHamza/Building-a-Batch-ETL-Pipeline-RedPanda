@@ -74,10 +74,13 @@ services:
 
   data_pipeline:
     build: ./data_pipeline
-    container_name: data_pipeline_container
+    container_name: data_pipeline
     environment:
       AIRFLOW_HOME: /data_pipeline/src/services/airflow
-      PYTHONPATH: /data_pipeline
+      PYTHONPATH: /
+      AIRFLOW__CORE__DAGS_FOLDER: /data_pipeline/src/services/airflow/dags
+      AIRFLOW__CORE__LOAD_EXAMPLES: False
+
     ports:
       - "5000:5000" # Airflow webserver
       - "8000:8000" # FastAPI application
