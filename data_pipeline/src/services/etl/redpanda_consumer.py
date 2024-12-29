@@ -1,4 +1,4 @@
-from data_pipeline.etl.redpanda_init import RedpandaInitializer
+from data_pipeline.src.services.etl.redpanda_init import RedpandaInitializer
 
 
 class RedpandaConsumer(RedpandaInitializer):

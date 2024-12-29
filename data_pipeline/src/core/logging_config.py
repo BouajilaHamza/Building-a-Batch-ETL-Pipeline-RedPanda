@@ -1,7 +1,7 @@
 import logging
 from logging.handlers import SysLogHandler
 
-from data_pipeline.setup.config import settings
+from data_pipeline.src.core.config import settings
 
 
 def setup_logging(name: str):

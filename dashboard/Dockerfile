@@ -9,4 +9,4 @@ RUN poetry install
 
 COPY . .
 
-CMD ["poetry", "run","uvicorn", "src.main:app"]
+CMD ["poetry", "run","streamlit", "run", "src/main.py", "--server.port", "8002"]

@@ -1,8 +1,8 @@
 from requests import Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 
-from data_pipeline.data_ingestion.data_ingestor import DataIngestor
-from data_pipeline.setup.config import settings
+from data_pipeline.src.core.config import settings
+from data_pipeline.src.services.data_ingestion.data_ingestor import DataIngestor
 
 
 class CoinMarketCapIngestor(DataIngestor):

@@ -1,8 +1,8 @@
 import pandas as pd
 import snowflake.connector
 
-from data_pipeline.setup.config import settings
-from data_pipeline.setup.logging_config import setup_logging
+from data_pipeline.src.core.config import settings
+from data_pipeline.src.core.logging_config import setup_logging
 
 
 class SnowflakeLoader:

@@ -1,4 +1,4 @@
-from data_pipeline.setup.logging_config import setup_logging
+from data_pipeline.src.core.logging_config import setup_logging
 
 
 class DataIngestor:
