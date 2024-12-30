@@ -8,21 +8,16 @@
 </head>
 <body>
     <div class="container">
-        <h1>Data Loader Interface</h1>
-        <form action="/load-data/" method="post">
+        <h1>Data Pipeline Monitoring Interface</h1>
+        <form>
             <label for="loader_type">Choose the data loader:</label>
             <select name="loader_type" id="loader_type">
                 <option value="snowflake">Snowflake</option>
                 <option value="motherduck">MotherDuck</option>
             </select>
             <br><br>
-            <label for="data_type">Choose the data type:</label>
-            <select name="data_type" id="data_type">
-                <option value="news">News</option>
-                <option value="bitcoin">Bitcoin</option>
-            </select>
             <br><br>
-            <button type="submit">Load Data</button>
+            <button>Update DataWarehouse(Coming Soon)</button>
         </form>
         {% if result %}
         <h2>Result:</h2>

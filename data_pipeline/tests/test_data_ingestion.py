@@ -1,6 +1,8 @@
 import unittest
 
-from data_pipeline.data_ingestion.news_data_ingestor import NewsDataIngestor
+from data_pipeline.src.services.data_ingestion.news_data_ingestor import (
+    NewsDataIngestor,
+)
 
 
 class TestNewsDataIngestor(unittest.TestCase):
