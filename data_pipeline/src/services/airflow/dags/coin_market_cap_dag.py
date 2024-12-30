@@ -9,7 +9,7 @@ from data_pipeline.src.services.data_ingestion.coin_market_cap_ingestor import (
 )
 from data_pipeline.src.services.etl.redpanda_consumer import RedpandaConsumer
 from data_pipeline.src.services.etl.redpanda_producer import RedpandaProducer
-from data_pipeline.src.services.storage.snowflake import SnowflakeLoader
+from data_pipeline.src.services.storage.motherduck import MotherduckLoader
 
 default_args = {
     "owner": "hamza",
@@ -39,7 +39,7 @@ def fetch_and_produce_data():
 def consume_and_load_data():
     try:
         consumer = RedpandaConsumer()
-        loader = SnowflakeLoader()
+        loader = MotherduckLoader()
         batch_size = 100
         batch = []
         message = consumer.consume_data()
@@ -60,7 +60,7 @@ with DAG(
     "CoinMarketCapIngestorDag",
     default_args=default_args,
     description="ETL pipeline for CoinMarketCapIngestor using Airflow",
-    schedule_interval=timedelta(days=1),
+    schedule_interval=timedelta(minutes=3),
 ) as dag:
     fetch_produce_task = PythonOperator(
         task_id="fetch_and_produce_data",

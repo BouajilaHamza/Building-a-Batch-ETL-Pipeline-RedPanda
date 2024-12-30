@@ -9,7 +9,7 @@ from data_pipeline.src.services.data_ingestion.news_data_ingestor import (
 )
 from data_pipeline.src.services.etl.redpanda_consumer import RedpandaConsumer
 from data_pipeline.src.services.etl.redpanda_producer import RedpandaProducer
-from data_pipeline.src.services.storage.snowflake import SnowflakeLoader
+from data_pipeline.src.services.storage.motherduck import MotherduckLoader
 
 default_args = {
     "owner": "hamza",
@@ -25,7 +25,7 @@ dag = DAG(
     "NewsDataIngestorDag",
     default_args=default_args,
     description="ETL pipeline for NewsDataIngestor using Airflow",
-    schedule_interval=timedelta(days=1),
+    schedule_interval=timedelta(minutes=3),
 )
 
 logger = setup_logging("ETLPipeline")
@@ -45,7 +45,7 @@ def fetch_and_produce_data():
 def consume_and_load_data():
     try:
         consumer = RedpandaConsumer()
-        loader = SnowflakeLoader()
+        loader = MotherduckLoader()
         batch_size = 100
         batch = []
         message = consumer.consume_data()
