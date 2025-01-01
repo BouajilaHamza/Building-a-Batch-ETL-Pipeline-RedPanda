@@ -24,13 +24,7 @@ class MotherduckLoader:
 class NewsDataLoader(MotherduckLoader):
     def clean_data(self, raw_data):
         # Perform specific data cleaning and transformation
-        # cleaned_data = []
-        # for record in raw_data:
-        #     cleaned_record = {
-        #         'field1': record['field1'].upper(),
-        #         'field2': record['field2'].strip()
-        #     }
-        #     cleaned_data.append(cleaned_record)
+        # This is in ELT process (you can add some transformation here if you have big data generally which not the case for this simple project)
         return [raw_data]
 
     def load_data(self, data):
@@ -62,6 +56,8 @@ class BitcoinDataLoader(MotherduckLoader):
 
     def clean_data(self, raw_data):
         # Perform specific data cleaning and transformation
+        # This is in ELT process (you can add some transformation here if you have big data generally which not the case for this simple project)
+
         return [raw_data]
 
     def load_data(self, data):

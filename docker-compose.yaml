@@ -1,11 +1,20 @@
 version: '3.7'
 name: redpanda-quickstart-one-broker
+
 networks:
   redpanda_network:
     driver: bridge
+
+
 volumes:
   redpanda-0: null
+  ssl-certs:
+  ssl-keys:
+
+
+
 services:
+
   redpanda-0:
     container_name: redpanda-0
     command:
@@ -40,6 +49,7 @@ services:
       - 8082:8082
       - 9092:9092
       - 19644:9644
+
   console:
     container_name: redpanda-console
     image: docker.redpanda.com/redpandadata/console:v2.7.2
@@ -72,6 +82,7 @@ services:
   #   depends_on:
   #     - redpanda-0
 
+
   data_pipeline:
     build: ./data_pipeline
     container_name: data_pipeline
@@ -80,7 +91,32 @@ services:
       PYTHONPATH: /
       AIRFLOW__CORE__DAGS_FOLDER: /data_pipeline/src/services/airflow/dags
       AIRFLOW__CORE__LOAD_EXAMPLES: False
-
+    volumes:
+      - ssl-certs:/etc/ssl/certs
+      - ssl-keys:/etc/ssl/private
     ports:
       - "5000:5000" # Airflow webserver
       - "8000:8000" # FastAPI application
+    depends_on:
+      - console
+    networks:
+      - redpanda_network
+
+
+
+  # nginx:
+  #   container_name: nginx
+  #   image: nginx:latest
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/conf.d/default.conf
+  #     - ssl-certs:/etc/ssl/certs
+  #     - ssl-keys:/etc/ssl/private
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   depends_on:
+  #     - data_pipeline
+  #     - console
+  #     - redpanda-0
+  #   networks:
+  #     - redpanda_network
