@@ -12,7 +12,10 @@ class Settings(BaseSettings):
     PAPERTRAIL_PORT: int = config("PAPERTRAIL_PORT", cast=int)
 
     # RedPanda
-    REDPANDA_TOPIC: str = config("REDPANDA_TOPIC", cast=str)
+    REDPANDA_INPUT_TOPIC: str = config("REDPANDA_INPUT_TOPIC", cast=str)
+    REDPANDA_BROKER_ADDRESS: str = "redpanda-0:19092"
+    REDPANDA_OUTPUT_TOPIC: str = config("REDPANDA_OUTPUT_TOPIC", cast=str)
+    LOG_LEVEL: str = "DEBUG"
 
     # Snowflake
     SNOWFLAKE_USERNAME: str = config("SNOWFLAKE_USERNAME", cast=str)

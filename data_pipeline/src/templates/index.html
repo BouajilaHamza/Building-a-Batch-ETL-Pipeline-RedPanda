@@ -8,6 +8,13 @@
 </head>
 <body>
     <div class="container">
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/motherduck">MotherDuck</a></li>
+                <li><a href="/solarwinds">SolarWinds</a></li>
+            </ul>
+        </nav>
         <h1>Data Pipeline Monitoring Interface</h1>
         <form>
             <label for="loader_type">Choose the data loader:</label>
@@ -16,8 +23,7 @@
                 <option value="motherduck">MotherDuck</option>
             </select>
             <br><br>
-            <br><br>
-            <button>Update DataWarehouse(Coming Soon)</button>
+            <button>Update DataWarehouse (Coming Soon)</button>
         </form>
         {% if result %}
         <h2>Result:</h2>
@@ -25,16 +31,10 @@
         {% endif %}
     </div>
     <div class="iframe-container">
-        <iframe src="http://data_pipeline:5000" title="Airflow UI"></iframe>
+        <iframe src="http://0.0.0.0:5000" title="Airflow UI"></iframe>
     </div>
     <div class="iframe-container">
-        <iframe src="http://console:8080" title="Redpanda Console"></iframe>
-    </div>
-    <div class="iframe-container">
-        <iframe src="https://app.motherduck.com/" title="Motherduck Console"></iframe>
-    </div>
-    <div class="iframe-container">
-        <iframe src="https://my.solarwinds.cloud" title="Logging Console"></iframe>
+        <iframe src="http://0.0.0.0:8080" title="Redpanda Console"></iframe>
     </div>
 </body>
 </html>

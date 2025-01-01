@@ -9,7 +9,7 @@ from data_pipeline.src.services.data_ingestion.coin_market_cap_ingestor import (
 )
 from data_pipeline.src.services.etl.redpanda_consumer import RedpandaConsumer
 from data_pipeline.src.services.etl.redpanda_producer import RedpandaProducer
-from data_pipeline.src.services.storage.motherduck import MotherduckLoader
+from data_pipeline.src.services.storage.motherduck import BitcoinDataLoader
 
 default_args = {
     "owner": "hamza",
@@ -21,15 +21,17 @@ default_args = {
     "retry_delay": timedelta(minutes=5),
 }
 
-
 logger = setup_logging("ETLPipeline")
 
 
 def fetch_and_produce_data():
     try:
         ingestor = CoinMarketCapIngestor()
+        logger.debug("Fetching data from CoinMarketCap")
         producer = RedpandaProducer()
+        logger.debug("CoinMarketCap producer initialized")
         data = ingestor.fetch_data()
+        logger.debug("Data fetched successfully")
         producer.produce_data(data)
     except Exception as e:
         logger.error(f"Error in fetch_and_produce_data: {e}")
@@ -39,17 +41,19 @@ def fetch_and_produce_data():
 def consume_and_load_data():
     try:
         consumer = RedpandaConsumer()
-        loader = MotherduckLoader()
+        loader = BitcoinDataLoader()
         batch_size = 100
         batch = []
         message = consumer.consume_data()
         if message:
+            logger.info(f"Consumed message: {message}")
             batch.append(message["Value"])
             logger.debug("Batch size: " + str(len(batch)))
             if len(batch) >= batch_size:
                 loader.load_data(batch)
                 batch = []
         if batch:
+            logger.info(f"Loading batch of size: {len(batch)}")
             loader.load_data(batch)
     except Exception as e:
         logger.error(f"Error in consume_and_load_data: {e}")
