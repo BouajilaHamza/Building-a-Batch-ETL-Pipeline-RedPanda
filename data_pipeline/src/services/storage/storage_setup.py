@@ -1,5 +1,7 @@
-from data_pipeline.src.services.storage.motherduck import MotherduckLoader
-from data_pipeline.src.services.storage.snowflake import SnowflakeLoader
+from data_pipeline.src.services.storage.motherduck.motherduck_init import (
+    MotherduckLoader,
+)
+from data_pipeline.src.services.storage.snowflake.snowflake import SnowflakeLoader
 
 
 class NewsDataLoader(MotherduckLoader):

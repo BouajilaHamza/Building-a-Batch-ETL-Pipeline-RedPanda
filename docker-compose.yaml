@@ -1,5 +1,5 @@
 version: '3.7'
-name: redpanda-quickstart-one-broker
+name: building-streaming-app
 
 networks:
   redpanda_network:

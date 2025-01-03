@@ -13,11 +13,19 @@ class RedpandaBase:
             auto_offset_reset="earliest",
             loglevel=settings.LOG_LEVEL,
         )
-        self.input_topic = self.app.topic(
-            settings.REDPANDA_INPUT_TOPIC, value_deserializer="json"
+
+        self.bitcoin_input_topic = self.app.topic(
+            settings.REDPANDA_BITCOIN_INPUT_TOPIC, value_deserializer="json"
         )
-        self.output_topic = self.app.topic(
-            settings.REDPANDA_OUTPUT_TOPIC, value_serializer="json"
+        self.bitcoin_output_topic = self.app.topic(
+            settings.REDPANDA_BITCOIN_OUTPUT_TOPIC, value_serializer="json"
+        )
+
+        self.news_input_topic = self.app.topic(
+            settings.REDPANDA_NEWS_INPUT_TOPIC, value_deserializer="json"
+        )
+        self.news_output_topic = self.app.topic(
+            settings.REDPANDA_NEWS_OUTPUT_TOPIC, value_serializer="json"
         )
 
     def run(self):

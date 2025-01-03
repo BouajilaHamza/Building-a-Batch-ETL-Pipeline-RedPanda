@@ -9,7 +9,9 @@ from data_pipeline.src.services.data_ingestion.coin_market_cap_ingestor import (
 )
 from data_pipeline.src.services.etl.redpanda_consumer import RedpandaConsumer
 from data_pipeline.src.services.etl.redpanda_producer import RedpandaProducer
-from data_pipeline.src.services.storage.motherduck import BitcoinDataLoader
+from data_pipeline.src.services.storage.motherduck.motherduck_bitcoin import (
+    BitcoinDataLoader,
+)
 
 default_args = {
     "owner": "hamza",
@@ -32,7 +34,7 @@ def fetch_and_produce_data():
         logger.debug("CoinMarketCap producer initialized")
         data = ingestor.fetch_data()
         logger.debug("Data fetched successfully")
-        producer.produce_data(data)
+        producer.bitcoin_produce_data(data)
     except Exception as e:
         logger.error(f"Error in fetch_and_produce_data: {e}")
         raise
@@ -44,7 +46,7 @@ def consume_and_load_data():
         loader = BitcoinDataLoader()
         batch_size = 100
         batch = []
-        message = consumer.consume_data()
+        message = consumer.bitcoin_consume_data()
         if message:
             logger.info(f"Consumed message: {message}")
             batch.append(message["Value"])

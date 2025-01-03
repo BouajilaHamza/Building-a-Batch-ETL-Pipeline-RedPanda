@@ -9,7 +9,9 @@ from data_pipeline.src.services.data_ingestion.news_data_ingestor import (
 )
 from data_pipeline.src.services.etl.redpanda_consumer import RedpandaConsumer
 from data_pipeline.src.services.etl.redpanda_producer import RedpandaProducer
-from data_pipeline.src.services.storage.motherduck import MotherduckLoader
+from data_pipeline.src.services.storage.motherduck.motherduck_news import (
+    MotherduckLoader,
+)
 
 default_args = {
     "owner": "hamza",
@@ -36,7 +38,7 @@ def fetch_and_produce_data():
         ingestor = NewsDataIngestor()
         producer = RedpandaProducer()
         data = ingestor.fetch_data()
-        producer.produce_data(data)
+        producer.news_produce_data(data)
     except Exception as e:
         logger.error(f"Error in fetch_and_produce_data: {e}")
         raise
@@ -48,7 +50,7 @@ def consume_and_load_data():
         loader = MotherduckLoader()
         batch_size = 100
         batch = []
-        message = consumer.consume_data()
+        message = consumer.news_consume_data()
         if message:
             batch.append(message["Value"])
             logger.debug("Batch size: " + str(len(batch)))
