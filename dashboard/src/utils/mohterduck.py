@@ -1,5 +1,6 @@
 import duckdb
-from src.core.config import settings
+
+from dashboard.src.core.config import settings
 
 
 def init_conn():

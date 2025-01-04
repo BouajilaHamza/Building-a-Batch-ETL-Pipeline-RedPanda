@@ -74,13 +74,13 @@ services:
     depends_on:
       - redpanda-0
 
-  # dashboard:
-  #   container_name: dashboard
-  #   build: ./dashboard
-  #   ports:
-  #     - "8501:8000"
-  #   depends_on:
-  #     - redpanda-0
+  dashboard:
+    container_name: dashboard
+    build: ./dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      PYTHONPATH: /
 
 
   data_pipeline:

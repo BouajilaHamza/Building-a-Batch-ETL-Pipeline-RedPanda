@@ -1,7 +1,7 @@
 import logging
 from logging.handlers import SysLogHandler
 
-from src.core.config import settings
+from dashboard.src.core.config import settings
 
 
 def setup_logging(name: str) -> logging.Logger:

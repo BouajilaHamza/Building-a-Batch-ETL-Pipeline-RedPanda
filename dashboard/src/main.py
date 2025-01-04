@@ -1,6 +1,7 @@
 import streamlit as st
-from src.core.logging_config import setup_logging
-from src.utils.mohterduck import fetch_all, init_conn
+
+from dashboard.src.core.logging_config import setup_logging
+from dashboard.src.utils.mohterduck import fetch_all, init_conn
 
 st.set_page_config(page_title="Bitcoin Dashboard", page_icon="📈", layout="wide")
 logger = setup_logging("main")
