@@ -1,5 +1,6 @@
 import re
 
+import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
@@ -21,40 +22,47 @@ class RedpandaStreamApp(RedpandaBase):
         self.bitcoin_sdf = self.app.dataframe(self.bitcoin_input_topic)
         self.bitcoin_sdf = self.bitcoin_sdf.apply(self.transform_bitcoin)
         self.bitcoin_sdf.to_topic(self.bitcoin_output_topic)
+        self.stop_words = set(stopwords.words("english"))
+        self.lemmatizer = WordNetLemmatizer()
+        # self.stemmer = PorterStemmer()
 
-    def transform_news(self, msg):
-        # Remove punctuation and numbers
-        msg["description"] = re.sub(r"[^\w\s]", "", msg["description"])
-        msg["description"] = re.sub(r"\d+", "", msg["description"])
+    def transform_news(self, msg: list[dict[str, str]]):
+        msg = msg["results"]
+        cleaned_msg = []
+        for doc in msg:
+            clean_doc = {}
+            for key in doc:
+                if key in ["title", "description"]:
+                    # Remove punctuation and numbers
+                    doc[key] = re.sub(r"[^\w\s]", "", doc[key])
+                    doc[key] = re.sub(r"\d+", "", doc[key])
+                    # Convert to lowercase
+                    doc[key] = doc[key].lower()
+                    # Remove stop words
 
-        # Convert to lowercase
-        msg["description"] = msg["description"].lower()
+                    words = doc[key].split()
+                    filtered_words = [
+                        word for word in words if word not in self.stop_words
+                    ]
+                    # Tokenize
+                    tokens = word_tokenize(" ".join(filtered_words))
+                    # Stemming and Lemmatization
+                    # stemmed_words = [self.stemmer.stem(word) for word in tokens]
+                    lemmatized_words = [
+                        self.lemmatizer.lemmatize(word) for word in tokens
+                    ]
+                    # Remove extra whitespace
+                    doc[key] = " ".join(lemmatized_words)
+            clean_doc = {
+                "title": doc["title"],
+                "description": doc["description"],
+                "pubDate": doc["pubDate"],
+                "source": doc["source_name"],
+            }
+            self.logger.info(f"Transformed News data: {clean_doc}")
+            cleaned_msg.append(clean_doc)
 
-        # Remove stop words
-        stop_words = set(stopwords.words("english"))
-        words = msg["description"].split()
-        filtered_words = [word for word in words if word not in stop_words]
-
-        # Tokenize
-        tokens = word_tokenize(" ".join(filtered_words))
-
-        # Stemming and Lemmatization
-        # stemmer = PorterStemmer()
-        lemmatizer = WordNetLemmatizer()
-        # stemmed_words = [stemmer.stem(word) for word in tokens]
-        # print(stemmed_words)
-        lemmatized_words = [lemmatizer.lemmatize(word) for word in tokens]
-
-        # Remove extra whitespace
-        msg["description"] = " ".join(lemmatized_words)
-        clean_msg = {
-            "title": msg["title"],
-            "description": msg["description"],
-            "pubDate": msg["pubDate"],
-            "source": msg["source_name"],
-        }
-
-        return clean_msg
+        return cleaned_msg
 
     def transform_bitcoin(self, msg):
         new_msg = []
@@ -63,14 +71,23 @@ class RedpandaStreamApp(RedpandaBase):
                 for i in msg["data"]:
                     new_msg.append(i["quote"]["USD"])
                     self.logger.info(f"Transformed data: {i}")
-            self.logger.info(f"Transformed data: {new_msg}")
+            # self.logger.info(f"Transformed data: {new_msg}")
             return new_msg
 
     def run(self):
         self.app.run()
 
 
+def download_nltk_data():
+    nltk.download("punkt_tab")
+    nltk.download("wordnet")
+    nltk.download("stopwords")
+
+
 if __name__ == "__main__":
+    logger.info("Downloading NLTK data")
+    download_nltk_data()
     logger.info("Starting Redpanda Stream App")
     stream_app = RedpandaStreamApp()
+    logger.info("Running Redpanda Stream App")
     stream_app.run()

@@ -9,9 +9,7 @@ from data_pipeline.src.services.data_ingestion.news_data_ingestor import (
 )
 from data_pipeline.src.services.etl.redpanda_consumer import RedpandaConsumer
 from data_pipeline.src.services.etl.redpanda_producer import RedpandaProducer
-from data_pipeline.src.services.storage.motherduck.motherduck_news import (
-    MotherduckLoader,
-)
+from data_pipeline.src.services.storage.motherduck.motherduck_news import NewsDataLoader
 
 default_args = {
     "owner": "hamza",
@@ -47,7 +45,7 @@ def fetch_and_produce_data():
 def consume_and_load_data():
     try:
         consumer = RedpandaConsumer()
-        loader = MotherduckLoader()
+        loader = NewsDataLoader()
         batch_size = 100
         batch = []
         message = consumer.news_consume_data()
