@@ -5,7 +5,7 @@ from data_pipeline.src.services.data_ingestion.data_ingestor import DataIngestor
 
 
 class NewsDataIngestor(DataIngestor):
-    def __init__(self, category="politics", country="bd"):
+    def __init__(self, category="politics", country="us"):
         super().__init__()
         self.category = category
         self.country = country
@@ -19,4 +19,3 @@ class NewsDataIngestor(DataIngestor):
             return response.json()
         except Exception as e:
             self.logger.error(f"An error occurred: {e}")
-            return None

@@ -36,10 +36,10 @@ def fetch_and_produce_data():
         ingestor = NewsDataIngestor()
         producer = RedpandaProducer()
         data = ingestor.fetch_data()
+        logger.info(f"News Data fetched: {data}")
         producer.news_produce_data(data)
     except Exception as e:
         logger.error(f"Error in fetch_and_produce_data: {e}")
-        raise
 
 
 def consume_and_load_data():
@@ -59,7 +59,6 @@ def consume_and_load_data():
             loader.load_data(batch)
     except Exception as e:
         logger.error(f"Error in consume_and_load_data: {e}")
-        raise
 
 
 fetch_produce_task = PythonOperator(
