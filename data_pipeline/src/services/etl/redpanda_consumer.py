@@ -21,9 +21,9 @@ class RedpandaConsumer(RedpandaBase):
                 self.logger.error(f"Error: {message.error()}")
                 raise Exception(f"Error: {message.error()}")
             else:
-                self.logger.info(
-                    f"Received message: ,Key : {message.key()} \t Value : {message.value()}"
-                )
+                # self.logger.info(
+                #     f"Received message: ,Key : {message.key()} \t Value : {message.value()}"
+                # )
                 return {"Key": message.key(), "Value": message.value()}
 
     def news_consume_data(self):
@@ -41,7 +41,7 @@ class RedpandaConsumer(RedpandaBase):
                 self.logger.error(f"Error: {message.error()}")
                 raise Exception(f"Error: {message.error()}")
             else:
-                self.logger.info(
-                    f"Received message: ,Key : {message.key()} \t Value : {message.value()}"
-                )
+                # self.logger.info(
+                #     f"Received message: ,Key : {message.key()} \t Value : {message.value()}"
+                # )
                 return {"Key": message.key(), "Value": message.value()}

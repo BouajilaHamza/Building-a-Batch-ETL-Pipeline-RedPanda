@@ -4,6 +4,8 @@ from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 from data_pipeline.src.core.config import settings
 from data_pipeline.src.services.data_ingestion.data_ingestor import DataIngestor
 
+test_prices = set()
+
 
 class CoinMarketCapIngestor(DataIngestor):
     def __init__(self, start=1, limit=5000, convert="USD"):
@@ -25,7 +27,9 @@ class CoinMarketCapIngestor(DataIngestor):
             response = self.session.get(self.url, params=self.parameters)
             response.raise_for_status()  # Check if the request was successful
             data = response.json()  # Directly parse JSON response
-            self.logger.info(f"Data fetched successfully: {response}")
+            for i in range(len(data["data"])):
+                test_prices.add(data["data"][i]["quote"]["USD"]["price"])
+            self.logger.info(f"Data fetched successfully: {len(test_prices)}")
             return data
         except (ConnectionError, Timeout, TooManyRedirects, Exception) as e:
             self.logger.error(f"An error occurred: {e}")

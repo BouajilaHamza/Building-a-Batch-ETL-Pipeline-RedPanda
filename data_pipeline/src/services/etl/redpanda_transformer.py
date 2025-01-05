@@ -26,54 +26,43 @@ class RedpandaStreamApp(RedpandaBase):
         self.lemmatizer = WordNetLemmatizer()
         # self.stemmer = PorterStemmer()
 
-    def transform_news(self, msg: list[dict[str, str]]):
-        if msg:
-            msg = msg["results"]
-            cleaned_msg = []
-            for doc in msg:
-                clean_doc = {}
-                for key, value in doc.items():
-                    if key in ["title", "description"]:
-                        # Remove punctuation and numbers
-                        if value:
-                            doc[key] = re.sub(r"[^\w\s]", "", doc[key])
-                            doc[key] = re.sub(r"\d+", "", doc[key])
-                            # Convert to lowercase
-                            doc[key] = doc[key].lower()
-                            # Remove stop words
+    def clean_text(self, text: str) -> str:
+        text = re.sub(r"[^\w\s]", "", text)
+        text = re.sub(r"\d+", "", text)
+        text = text.lower()
+        words = text.split()
+        filtered_words = [word for word in words if word not in self.stop_words]
+        tokens = word_tokenize(" ".join(filtered_words))
+        lemmatized_words = [self.lemmatizer.lemmatize(word) for word in tokens]
+        return " ".join(lemmatized_words)
 
-                            words = doc[key].split()
-                            filtered_words = [
-                                word for word in words if word not in self.stop_words
-                            ]
-                            # Tokenize
-                            tokens = word_tokenize(" ".join(filtered_words))
-                            # Stemming and Lemmatization
-                            # stemmed_words = [self.stemmer.stem(word) for word in tokens]
-                            lemmatized_words = [
-                                self.lemmatizer.lemmatize(word) for word in tokens
-                            ]
-                            # Remove extra whitespace
-                            doc[key] = " ".join(lemmatized_words)
-                clean_doc = {
-                    "title": doc["title"],
-                    "description": doc["description"],
-                    "pubDate": doc["pubDate"],
-                    "source": doc["source_name"],
-                }
-                self.logger.info(f"Transformed News data: {clean_doc}")
-                cleaned_msg.append(clean_doc)
-
-            return cleaned_msg
+    def transform_news(self, msg: dict) -> list:
+        cleaned_msg = []
+        if msg and "results" in msg:
+            for doc in msg["results"]:
+                try:
+                    clean_doc = {
+                        "title": self.clean_text(doc.get("title", "")),
+                        "description": self.clean_text(doc.get("description", "")),
+                        "pubDate": doc.get("pubDate", ""),
+                        "source": doc.get("source_name", ""),
+                    }
+                    self.logger.info(f"Transformed News data: {clean_doc}")
+                    cleaned_msg.append(clean_doc)
+                except Exception as e:
+                    self.logger.error(f"Error transforming news document: {e}")
+                    raise Exception(f"Error transforming news document: {e}")
+        return cleaned_msg
 
     def transform_bitcoin(self, msg):
         new_msg = []
         if msg:
             if "data" in msg:
                 for i in msg["data"]:
+                    i["quote"]["USD"].update({"id": i["id"]})
                     new_msg.append(i["quote"]["USD"])
-                    self.logger.info(f"Transformed data: {i}")
-            # self.logger.info(f"Transformed data: {new_msg}")
+                    self.logger.debug(f"Transformed data: {i}")
+            self.logger.debug(f"Transformed data: {new_msg}")
             return new_msg
 
     def run(self):
@@ -91,5 +80,7 @@ if __name__ == "__main__":
     download_nltk_data()
     logger.info("Starting Redpanda Stream App")
     stream_app = RedpandaStreamApp()
+    logger.info("Initializing Topics")
+    stream_app.clear_topics()
     logger.info("Running Redpanda Stream App")
     stream_app.run()

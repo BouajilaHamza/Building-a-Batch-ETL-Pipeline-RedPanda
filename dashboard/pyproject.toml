@@ -13,6 +13,7 @@ python-decouple = "^3.8"
 pydantic-settings = "^2.7.1"
 pydantic = "^2.10.4"
 plotly = "^5.24.1"
+streamlit-autorefresh = "^1.0.1"
 
 
 [build-system]

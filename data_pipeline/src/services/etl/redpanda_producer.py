@@ -3,6 +3,8 @@ import uuid
 
 from data_pipeline.src.services.etl.redpanda_init import RedpandaBase
 
+test_prices = set()
+
 
 class RedpandaProducer(RedpandaBase):
     def __init__(self):

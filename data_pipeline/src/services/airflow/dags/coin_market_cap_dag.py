@@ -13,6 +13,7 @@ from data_pipeline.src.services.storage.motherduck.motherduck_bitcoin import (
     BitcoinDataLoader,
 )
 
+logger = setup_logging("ETLPipeline")
 default_args = {
     "owner": "hamza",
     "depends_on_past": False,
@@ -20,53 +21,46 @@ default_args = {
     "email_on_failure": False,
     "email_on_retry": False,
     "retries": 1,
-    "retry_delay": timedelta(minutes=5),
+    "retry_delay": timedelta(minutes=1),
 }
 
-logger = setup_logging("ETLPipeline")
+
+logger.info("Initializing CoinMarketCapIngestor")
+ingestor = CoinMarketCapIngestor()
+logger.debug("Initializing RedpandaProducer")
+producer = RedpandaProducer()
+logger.debug("Initializing RedpandaConsumer")
+consumer = RedpandaConsumer()
+logger.debug("Initializing BitcoinDataLoader")
+loader = BitcoinDataLoader()
 
 
 def fetch_and_produce_data():
     try:
-        ingestor = CoinMarketCapIngestor()
-        logger.debug("Fetching data from CoinMarketCap")
-        producer = RedpandaProducer()
-        logger.debug("CoinMarketCap producer initialized")
         data = ingestor.fetch_data()
         logger.debug("Data fetched successfully")
         producer.bitcoin_produce_data(data)
     except Exception as e:
         logger.error(f"Error in fetch_and_produce_data: {e}")
-        raise
+        raise Exception(f"Error in fetch_and_produce_data: {e}")
 
 
 def consume_and_load_data():
     try:
-        consumer = RedpandaConsumer()
-        loader = BitcoinDataLoader()
-        batch_size = 100
-        batch = []
         message = consumer.bitcoin_consume_data()
         if message:
             logger.info(f"Consumed message: {message}")
-            batch.append(message["Value"])
-            logger.debug("Batch size: " + str(len(batch)))
-            if len(batch) >= batch_size:
-                loader.load_data(batch)
-                batch = []
-        if batch:
-            logger.info(f"Loading batch of size: {len(batch)}")
-            loader.load_data(batch)
+            loader.load_data([message["Value"]])
     except Exception as e:
         logger.error(f"Error in consume_and_load_data: {e}")
-        raise
+        raise Exception(f"Error in consume_and_load_data: {e}")
 
 
 with DAG(
     "CoinMarketCapIngestorDag",
     default_args=default_args,
     description="ETL pipeline for CoinMarketCapIngestor using Airflow",
-    schedule_interval=timedelta(minutes=3),
+    schedule_interval=timedelta(seconds=10),
 ) as dag:
     fetch_produce_task = PythonOperator(
         task_id="fetch_and_produce_data",

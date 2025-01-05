@@ -1,11 +1,16 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+from streamlit_autorefresh import st_autorefresh
 
 from dashboard.src.core.logging_config import setup_logging
 from dashboard.src.utils.mohterduck import fetch_all, init_conn
 
 st.set_page_config(page_title="Bitcoin Dashboard", page_icon="📈", layout="wide")
+
+
+count = st_autorefresh(interval=10 * 1000, key="data_refresh")
+
 logger = setup_logging("main")
 st.title("Bitcoin Dashboard")
 st.markdown(
@@ -36,3 +41,10 @@ mc_fig = px.line(
 mc_fig.update_xaxes(tickangle=45)
 st.plotly_chart(mc_fig)
 # st.line_chart(data=aggregated, x="last_updated", y="market_cap",x_label="Date",y_label="Market Cap")
+col3, col4 = st.columns([1, 1])
+with col3:
+    st.metric("Unique Price Values", len(df.price.unique()))
+
+
+# Debug info
+st.write(f"Refreshed {count} times")
