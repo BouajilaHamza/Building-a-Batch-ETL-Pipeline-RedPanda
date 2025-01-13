@@ -1,4 +1,5 @@
 import re
+import uuid
 
 import nltk
 from nltk.corpus import stopwords
@@ -59,7 +60,7 @@ class RedpandaStreamApp(RedpandaBase):
         if msg:
             if "data" in msg:
                 for i in msg["data"]:
-                    i["quote"]["USD"].update({"id": i["id"]})
+                    i["quote"]["USD"].update({"id": uuid.uuid4().hex})
                     new_msg.append(i["quote"]["USD"])
                     self.logger.debug(f"Transformed data: {i}")
             self.logger.debug(f"Transformed data: {new_msg}")

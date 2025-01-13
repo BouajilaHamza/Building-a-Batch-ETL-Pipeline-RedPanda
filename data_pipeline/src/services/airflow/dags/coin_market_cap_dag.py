@@ -32,7 +32,6 @@ producer = RedpandaProducer()
 logger.debug("Initializing RedpandaConsumer")
 consumer = RedpandaConsumer()
 logger.debug("Initializing BitcoinDataLoader")
-loader = BitcoinDataLoader()
 
 
 def fetch_and_produce_data():
@@ -49,10 +48,11 @@ def consume_and_load_data():
     try:
         message = consumer.bitcoin_consume_data()
         if message:
-            logger.info(f"Consumed message: {message}")
-            loader.load_data([message["Value"]])
+            loader = BitcoinDataLoader()
+            loader.load_data(message["Value"])
+            loader.close()
     except Exception as e:
-        logger.error(f"Error in consume_and_load_data: {e}")
+        logger.info(f"Error in consume_and_load_data: {e}")
         raise Exception(f"Error in consume_and_load_data: {e}")
 
 

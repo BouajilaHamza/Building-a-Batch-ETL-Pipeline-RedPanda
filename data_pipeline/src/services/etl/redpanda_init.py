@@ -13,6 +13,7 @@ class RedpandaBase:
             consumer_group="StreamingAppConsumerGroup",
             auto_offset_reset="earliest",
             loglevel=settings.LOG_LEVEL,
+            request_timeout=5,
         )
         self.topic_admin = TopicAdmin(settings.REDPANDA_BROKER_ADDRESS)
         self.bitcoin_input_topic = self.app.topic(

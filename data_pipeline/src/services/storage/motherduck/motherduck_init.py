@@ -11,7 +11,6 @@ class MotherduckLoader:
 
     def connect_to_database(self):
         try:
-            # First try to connect to check if database exists
             conn = duckdb.connect(
                 f"md:{settings.DATABASE_NAME}?motherduck_token={settings.MOTHERDUCK_TOKEN}"
             )
@@ -49,7 +48,7 @@ class MotherduckLoader:
     def load_data(self, data: bytes):
         raise NotImplementedError("This method should be overridden by subclasses")
 
-    def close_connection(self):
-        if hasattr(self, "conn") and self.conn:
-            self.conn.close()
-            self.logger.info("Connection closed successfully")
+    # def close_connection(self):
+    #     if hasattr(self, "conn") and self.conn:
+    #         self.conn.close()
+    #         self.logger.info("Connection closed successfully")

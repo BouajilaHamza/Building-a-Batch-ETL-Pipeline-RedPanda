@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     PAPERTRAIL_PORT: int = config("PAPERTRAIL_PORT", cast=int)
 
     # RedPanda
-    REDPANDA_BROKER_ADDRESS: str = "redpanda-0:19092"
+    REDPANDA_BROKER_ADDRESS: str = config("REDPANDA_BROKER_ADDRESS", cast=str)
     REDPANDA_NEWS_INPUT_TOPIC: str = config("REDPANDA_NEWS_INPUT_TOPIC", cast=str)
     REDPANDA_NEWS_OUTPUT_TOPIC: str = config("REDPANDA_NEWS_OUTPUT_TOPIC", cast=str)
     REDPANDA_BITCOIN_INPUT_TOPIC: str = config("REDPANDA_BITCOIN_INPUT_TOPIC", cast=str)
