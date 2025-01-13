@@ -46,10 +46,10 @@ def fetch_and_produce_data():
 
 def consume_and_load_data():
     try:
-        message = consumer.bitcoin_consume_data()
-        if message:
+        messages = consumer.bitcoin_consume_data()
+        if messages:
             loader = BitcoinDataLoader()
-            loader.load_data(message["Value"])
+            loader.load_data(messages)
             loader.close()
     except Exception as e:
         logger.info(f"Error in consume_and_load_data: {e}")

@@ -1,25 +1,9 @@
 import json
-from datetime import datetime
 
-from pydantic import BaseModel
-
+from data_pipeline.src.schemas.bitcoin_schemas import BitcoinData
 from data_pipeline.src.services.storage.motherduck.motherduck_init import (
     MotherduckLoader,
 )
-
-
-class BitcoinData(BaseModel):
-    id: str
-    price: float
-    volume_24h: float
-    volume_change_24h: float
-    percent_change_1h: float
-    percent_change_24h: float
-    percent_change_7d: float
-    market_cap: float
-    market_cap_dominance: float
-    fully_diluted_market_cap: float
-    last_updated: datetime
 
 
 class BitcoinDataLoader(MotherduckLoader):
@@ -30,7 +14,7 @@ class BitcoinDataLoader(MotherduckLoader):
     def create_table_if_not_exists(self):
         self.conn.sql("""
             CREATE TABLE IF NOT EXISTS BitcoinData (
-                id VARCHAR(255) PRIMARY KEY,
+                id VARCHAR(255),
                 price FLOAT,
                 volume_24h FLOAT,
                 volume_change_24h FLOAT,
@@ -44,19 +28,19 @@ class BitcoinDataLoader(MotherduckLoader):
             );
         """)
 
-    def clean_data(self, raw_data: bytes | list) -> list:
-        if isinstance(raw_data, list):
-            return raw_data
-
-        data_str = raw_data.decode("utf-8")
-        json_data = json.loads(data_str)
-        return json_data
+    def clean_data(self, batch: list) -> BitcoinData:
+        cleaned_list = []
+        for message in batch:
+            data_str = message["Value"].decode("utf-8")
+            json_data = json.loads(data_str)
+            cleaned_list.extend(json_data)
+        cleaned_data = BitcoinData(root=cleaned_list)
+        return cleaned_data
 
     def load_data(self, data: bytes | list):
         try:
             record = self.clean_data(data)
-            for doc in record:
-                doc = BitcoinData(**doc)
+            for doc in record.root:
                 query = """INSERT INTO BitcoinData VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? );"""
                 values = [
                     doc.id,
@@ -72,7 +56,7 @@ class BitcoinDataLoader(MotherduckLoader):
                     doc.last_updated.isoformat(),
                 ]
                 self.conn.execute(query, values)
-                self.logger.info("Data loaded successfully")
+                self.logger.info(f"Data loaded successfully {doc}")
         except Exception as e:
             self.logger.info(f"Error loading data: {e}")
             raise Exception(f"Error loading data: {e}")

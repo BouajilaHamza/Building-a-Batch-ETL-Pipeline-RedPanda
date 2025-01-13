@@ -42,9 +42,14 @@ class RedpandaStreamApp(RedpandaBase):
         if msg and "results" in msg:
             for doc in msg["results"]:
                 try:
+                    title = doc.get("title", "") if doc.get("title", "") else ""
+                    description = (
+                        doc.get("description", "") if doc.get("description", "") else ""
+                    )
+
                     clean_doc = {
-                        "title": self.clean_text(doc.get("title", "")),
-                        "description": self.clean_text(doc.get("description", "")),
+                        "title": self.clean_text(title),
+                        "description": self.clean_text(description),
                         "pubDate": doc.get("pubDate", ""),
                         "source": doc.get("source_name", ""),
                     }
@@ -60,8 +65,9 @@ class RedpandaStreamApp(RedpandaBase):
         if msg:
             if "data" in msg:
                 for i in msg["data"]:
-                    i["quote"]["USD"].update({"id": uuid.uuid4().hex})
-                    new_msg.append(i["quote"]["USD"])
+                    doc = i["quote"]["USD"]
+                    doc["id"] = uuid.uuid4().hex
+                    new_msg.append(doc)
                     self.logger.debug(f"Transformed data: {i}")
             self.logger.debug(f"Transformed data: {new_msg}")
             return new_msg

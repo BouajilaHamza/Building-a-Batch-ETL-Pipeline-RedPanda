@@ -1,6 +1,7 @@
 import json
 
 from data_pipeline.src.core.logging_config import setup_logging
+from data_pipeline.src.schemas.news_schemas import NewsData
 from data_pipeline.src.services.storage.motherduck.motherduck_init import (
     MotherduckLoader,
 )
@@ -22,22 +23,20 @@ class NewsDataLoader(MotherduckLoader):
             );
         """)
 
-    def clean_data(self, raw_data: bytes | list) -> list:
-        if isinstance(raw_data, list):
-            cleaned_data = [
-                json.loads(doc.decode("utf-8"))
-                for doc in raw_data
-                if isinstance(doc, bytes)
-            ]
-            return cleaned_data
-        data_str = raw_data.decode("utf-8")
-        json_data = json.loads(data_str)
-        json_data = [
-            json.loads(doc.decode("utf-8"))
-            for doc in json_data
-            if isinstance(doc, bytes)
-        ]
-        return json_data
+    def clean_data(self, batch: list) -> NewsData:
+        clean_list = []
+        for message in batch:
+            if message:
+                data_str = message["Value"].decode("utf-8")
+                json_data = json.loads(data_str)
+                json_data = [
+                    json.loads(doc.decode("utf-8"))
+                    for doc in json_data
+                    if isinstance(doc, bytes)
+                ]
+                clean_list.extend(json_data)
+        cleaned_data = NewsData(root=clean_list)
+        return cleaned_data
 
     def load_data(self, data):
         try:
@@ -46,15 +45,13 @@ class NewsDataLoader(MotherduckLoader):
                 self.logger.info("Batch size: " + str(len(batch)))
                 for doc in batch:
                     self.logger.info(doc)
-                    self.conn.sql(
-                        f"""INSERT INTO NewsData (description, source, pubDate, title)
-                        VALUES (
-                        '{doc["description"]}',
-                        '{doc["source"]}',
-                        '{doc["pubDate"]}',
-                        '{doc["title"]}'
-                    )
-                        """
+                    self.conn.execute(
+                        "INSERT INTO NewsData VALUES (?, ?, ?, ?);",
+                        [doc.description, doc.source, doc.pubDate, doc.title],
                     )
         except Exception as e:
             self.logger.error(f"Error loading News data: {e}")
+            raise Exception(f"Error loading News data: {e}")
+
+    def close(self):
+        self.conn.close()

@@ -45,7 +45,6 @@ def fetch_and_produce_data():
 def consume_and_load_data():
     try:
         consumer = RedpandaConsumer()
-        loader = NewsDataLoader()
         batch_size = 100
         batch = []
         message = consumer.news_consume_data()
@@ -53,10 +52,14 @@ def consume_and_load_data():
             batch.append(message["Value"])
             logger.debug("Batch size: " + str(len(batch)))
             if len(batch) >= batch_size:
+                loader = NewsDataLoader()
                 loader.load_data(batch)
+                loader.close()
                 batch = []
         if batch:
+            loader = NewsDataLoader()
             loader.load_data(batch)
+            loader.close()
     except Exception as e:
         logger.error(f"Error in consume_and_load_data: {e}")
 
