@@ -18,14 +18,14 @@ default_args = {
     "email_on_failure": False,
     "email_on_retry": False,
     "retries": 1,
-    "retry_delay": timedelta(minutes=5),
+    "retry_delay": timedelta(minutes=1),
 }
 
 dag = DAG(
     "NewsDataIngestorDag",
     default_args=default_args,
     description="ETL pipeline for NewsDataIngestor using Airflow",
-    schedule_interval=timedelta(minutes=3),
+    schedule_interval=timedelta(seconds=10),
 )
 
 logger = setup_logging("ETLPipeline")
@@ -40,28 +40,21 @@ def fetch_and_produce_data():
         producer.news_produce_data(data)
     except Exception as e:
         logger.error(f"Error in fetch_and_produce_data: {e}")
+        raise Exception(f"Error in fetch_and_produce_data: {e}")
 
 
 def consume_and_load_data():
     try:
         consumer = RedpandaConsumer()
-        batch_size = 100
-        batch = []
-        message = consumer.news_consume_data()
-        if message:
-            batch.append(message["Value"])
-            logger.debug("Batch size: " + str(len(batch)))
-            if len(batch) >= batch_size:
-                loader = NewsDataLoader()
-                loader.load_data(batch)
-                loader.close()
-                batch = []
+        batch = consumer.news_consume_data()
         if batch:
             loader = NewsDataLoader()
             loader.load_data(batch)
             loader.close()
+
     except Exception as e:
         logger.error(f"Error in consume_and_load_data: {e}")
+        raise Exception(f"Error in consume_and_load_data: {e}")
 
 
 fetch_produce_task = PythonOperator(

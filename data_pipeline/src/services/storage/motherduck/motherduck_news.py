@@ -38,17 +38,15 @@ class NewsDataLoader(MotherduckLoader):
         cleaned_data = NewsData(root=clean_list)
         return cleaned_data
 
-    def load_data(self, data):
+    def load_data(self, data: list):
         try:
             cleaned_data = self.clean_data(data)
-            for batch in cleaned_data:
-                self.logger.info("Batch size: " + str(len(batch)))
-                for doc in batch:
-                    self.logger.info(doc)
-                    self.conn.execute(
-                        "INSERT INTO NewsData VALUES (?, ?, ?, ?);",
-                        [doc.description, doc.source, doc.pubDate, doc.title],
-                    )
+            for doc in cleaned_data.root:
+                self.logger.info(doc)
+                self.conn.execute(
+                    "INSERT INTO NewsData VALUES (?, ?, ?, ?);",
+                    [doc.description, doc.source, doc.pubDate, doc.title],
+                )
         except Exception as e:
             self.logger.error(f"Error loading News data: {e}")
             raise Exception(f"Error loading News data: {e}")
